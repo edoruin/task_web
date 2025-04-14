@@ -1,13 +1,23 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Aplicación Simple</title>
+  <title>Usuarios</title>
 </head>
 <body>
-    <h1>¡Hola, GitHub Pages!</h1>
-    <p>Esta es una aplicación HTML simple conectada por render.</p>
+  <h1>Usuarios</h1>
+  <ul id="lista-usuarios"></ul>
+
+  <script>
+    fetch('https://mi-app.onrender.com/usuarios') // cambia por tu URL real
+      .then(res => res.json())
+      .then(data => {
+        const ul = document.getElementById('lista-usuarios');
+        data.forEach(usuario => {
+          const li = document.createElement('li');
+          li.textContent = usuario.nombre;
+          ul.appendChild(li);
+        });
+      });
+  </script>
 </body>
 </html>
- 
