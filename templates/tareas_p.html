@@ -13,19 +13,6 @@
       border: 1px solid #ccc;
     }
 
-    .checkbox {
-      width: 20px;
-      height: 20px;
-      border: 2px solid #999;
-      margin-right: 10px;
-      cursor: pointer;
-      display: inline-block;
-    }
-
-    .checkbox.activa {
-      background-color: limegreen;
-    }
-
     .acciones {
       display: flex;
       gap: 10px;
@@ -77,11 +64,10 @@
     {% for tarea in tareas %}
       <div class="tarea">
         <div>
-          <div class="checkbox" onclick="this.classList.toggle('activa')"></div>
           <span>{{ tarea.descripcion }}</span>
         </div>
         <div class="acciones">
-          <form action="/borrar_tarea/{{ tarea.id }}" method="post">
+          <form action="/eliminar_tarea/{{ tarea.id }}" method="post">
             <button type="submit">Eliminar</button>
           </form>
         </div>

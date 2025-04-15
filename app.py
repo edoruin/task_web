@@ -106,3 +106,25 @@ def crear_tarea():
     
     flash("Tarea creada exitosamente.")
     return redirect("/tareas_p")  # Redirige a la página de tareas
+
+
+@app.route("/eliminar_tarea/<int:id>", methods=["POST"])
+def eliminar_tarea(id):
+    if "usuario_id" not in session:
+        flash("Debes iniciar sesión primero.")
+        return redirect("/")  # Si no está logueado, redirige al login
+    
+    tarea = Tarea.query.get_or_404(id)  # Obtiene la tarea por su id o devuelve 404 si no la encuentra
+    
+    # Verificamos que la tarea pertenezca al usuario logueado
+    if tarea.usuario_id != session["usuario_id"]:
+        flash("No tienes permiso para eliminar esta tarea.")
+        return redirect("/tareas_p")
+    
+    # Eliminar la tarea
+    db.session.delete(tarea)
+    db.session.commit()
+    
+    flash("Tarea eliminada exitosamente.")
+    return redirect("/tareas_p")  # Redirige a la página de tareas
+
