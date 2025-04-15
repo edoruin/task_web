@@ -1,14 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Formulario</title>
+  <meta charset="UTF-8">
+  <title>Autenticación</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
 </head>
 <body>
-  <h1>Registrar Usuario</h1>
-  <form action="/guardar" method="post">
-    Nombre: <input type="text" name="nombre"><br>
-    Contraseña: <input type="password" name="contrasena"><br>
-    <button type="submit">Guardar</button>
-  </form>
+  <div class="contenedor">
+    <!-- Registro -->
+    <div class="formulario">
+      <h2>Registrar Usuario</h2>
+      <form action="/guardar" method="post">
+        <label>Nombre:</label>
+        <input type="text" name="nombre" required><br>
+        <label>Contraseña:</label>
+        <input type="password" name="contrasena" required><br>
+        <button type="submit">Guardar</button>
+      </form>
+    </div>
+
+    <!-- Inicio de sesión -->
+    <div class="formulario">
+      <h2>Iniciar Sesión</h2>
+      <form action="/login" method="post">
+        <label>Usuario:</label>
+        <input type="text" name="usuario" required><br>
+        <label>Contraseña:</label>
+        <input type="password" name="password" required><br>
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
