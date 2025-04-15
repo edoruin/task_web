@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/static')
 app.secret_key = "supersecreto"  # Necesario para usar sesiones y mensajes flash
 
 # Configuración de la base de datos
@@ -90,9 +90,19 @@ def tareas_p():
     tareas = Tarea.query.filter_by(usuario_id=usuario_id).all()  # Obtener tareas del usuario
     return render_template("tareas_p.html", tareas=tareas)
 
-# Ruta para crear tarea
 @app.route("/crear_tarea", methods=["POST"])
 def crear_tarea():
     if "usuario_id" not in session:
+        flash("Debes iniciar sesión primero.")
         return redirect("/")  # Si no está logueado, redirige al login
     
+    descripcion = request.form["descripcion"]
+    usuario_id = session["usuario_id"]
+    
+    # Crear una nueva tarea
+    nueva_tarea = Tarea(descripcion=descripcion, usuario_id=usuario_id)
+    db.session.add(nueva_tarea)
+    db.session.commit()
+    
+    flash("Tarea creada exitosamente.")
+    return redirect("/tareas_p")  # Redirige a la página de tareas
