@@ -1,23 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Usuarios</title>
+  <title>Formulario</title>
 </head>
 <body>
-  <h1>Usuarios</h1>
-  <ul id="lista-usuarios"></ul>
-
-  <script>
-    fetch('https://mi-app.onrender.com/usuarios') // cambia por tu URL real
-      .then(res => res.json())
-      .then(data => {
-        const ul = document.getElementById('lista-usuarios');
-        data.forEach(usuario => {
-          const li = document.createElement('li');
-          li.textContent = usuario.nombre;
-          ul.appendChild(li);
-        });
-      });
-  </script>
+  <h1>Registrar Usuario</h1>
+  <form action="/guardar" method="post">
+    Nombre: <input type="text" name="nombre"><br>
+    Correo: <input type="email" name="correo"><br>
+    <button type="submit">Guardar</button>
+  </form>
 </body>
 </html>
