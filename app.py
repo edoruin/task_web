@@ -2,8 +2,6 @@ from flask import Flask, render_template, request, redirect, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
-from flask import session
-
 
 app = Flask(__name__)
 app.secret_key = "supersecreto"  # Necesario para usar sesiones y mensajes flash
@@ -20,7 +18,7 @@ class Usuario(db.Model):
     nombre = db.Column(db.String(100), unique=True)
     contrasena = db.Column(db.String(255)) 
 
-#modelo tareas
+# Modelo Tarea
 class Tarea(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     descripcion = db.Column(db.String(255), nullable=False)
@@ -60,58 +58,41 @@ def login():
     user = Usuario.query.filter_by(nombre=usuario).first()
 
     if user and check_password_hash(user.contrasena, password):
-        session["usuario"] = usuario
+        session["usuario_id"] = user.id  # Guardamos el usuario_id en la sesión
+        flash("Inicio de sesión exitoso.")
         return redirect("/tareas")
     else:
+        flash("Credenciales incorrectas.")
         return redirect("/")
 
-
-# Ruta protegida (opcional)
+# Ruta protegida
 @app.route("/tareas")
 def tareas():
-    if "usuario" in session:
-        return render_template("tareas_p.html")
+    if "usuario_id" in session:
+        return redirect("/tareas_p")  # Redirige a tareas_p si el usuario está logueado
     else:
         return redirect("/")
 
-# Cerrar sesión (opcional)
+# Cerrar sesión
 @app.route("/logout")
 def logout():
-    session.pop("usuario", None)
+    session.pop("usuario_id", None)  # Elimina usuario_id de la sesión
     flash("Sesión cerrada.")
     return redirect("/")
-
 
 # Ruta para mostrar tareas
 @app.route("/tareas_p")
 def tareas_p():
     if "usuario_id" not in session:
-        return redirect("/")
+        return redirect("/")  # Si no está logueado, redirige al login
+    
     usuario_id = session["usuario_id"]
-    tareas = Tarea.query.filter_by(usuario_id=usuario_id).all()
-    return render_template("tareas_p.html", tareas=tareas, usuario_id=usuario_id)
+    tareas = Tarea.query.filter_by(usuario_id=usuario_id).all()  # Obtener tareas del usuario
+    return render_template("tareas_p.html", tareas=tareas)
 
 # Ruta para crear tarea
 @app.route("/crear_tarea", methods=["POST"])
 def crear_tarea():
     if "usuario_id" not in session:
-        return redirect("/")
-    descripcion = request.form["descripcion"]
-    usuario_id = session["usuario_id"]  # ✅ lo tomas directo del session
-    nueva = Tarea(descripcion=descripcion, usuario_id=usuario_id)
-    db.session.add(nueva)
-    db.session.commit()
-    return redirect("/tareas_p")
-
-
-# Ruta para borrar tarea
-@app.route("/borrar_tarea/<int:id>", methods=["POST"])
-def borrar_tarea(id):
-    tarea = Tarea.query.get_or_404(id)
-    db.session.delete(tarea)
-    db.session.commit()
-    return redirect("/tareas_p")
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        return redirect("/")  # Si no está logueado, redirige al login
+    

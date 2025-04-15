@@ -7,6 +7,17 @@
 </head>
 <body>
   <div class="contenedor">
+    <!-- Mostrar mensajes flash -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <p class="flash">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
     <!-- Registro -->
     <div class="formulario">
       <h2>Registrar Usuario</h2>

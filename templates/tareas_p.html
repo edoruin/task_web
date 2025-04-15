@@ -30,10 +30,43 @@
       display: flex;
       gap: 10px;
     }
+
+    .flash-messages {
+      padding: 10px;
+      margin-bottom: 20px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .flash {
+      color: #333;
+      font-size: 16px;
+      margin: 5px 0;
+    }
+
+    .flash.success {
+      color: green;
+    }
+
+    .flash.error {
+      color: red;
+    }
   </style>
 </head>
 <body>
   <h2>Mis tareas</h2>
+
+  <!-- Mostrar mensajes flash -->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for message in messages %}
+          <p class="flash">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
 
   <form action="/crear_tarea" method="post">
     <input type="text" name="descripcion" placeholder="Nueva tarea" required>
