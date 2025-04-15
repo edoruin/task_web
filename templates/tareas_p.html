@@ -96,7 +96,7 @@
       <div class="form-editar" id="form-editar-{{ tarea.id }}">
         <form action="/editar_tarea/{{ tarea.id }}" method="post">
           <input type="text" name="descripcion" value="{{ tarea.descripcion }}" required>
-          <input type="date" name="fecha_vencimiento" value="{{ tarea.fecha_vencimiento|date('YYYY-MM-DD') }}">
+          <input type="date" name="fecha_vencimiento" value="{{ tarea.fecha_vencimiento.strftime('%Y-%m-%d') if tarea.fecha_vencimiento }}">
           <select name="prioridad">
             <option value="Baja" {% if tarea.prioridad == 'Baja' %}selected{% endif %}>Baja</option>
             <option value="Media" {% if tarea.prioridad == 'Media' %}selected{% endif %}>Media</option>
