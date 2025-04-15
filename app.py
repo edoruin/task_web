@@ -2,8 +2,9 @@ from flask import Flask, render_template, request, redirect, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from datetime import datetime
 
-app = Flask(__name__,static_url_path='/static')
+app = Flask(__name__, static_url_path='/static')
 app.secret_key = "supersecreto"  # Necesario para usar sesiones y mensajes flash
 
 # Configuración de la base de datos
@@ -18,11 +19,13 @@ class Usuario(db.Model):
     nombre = db.Column(db.String(100), unique=True)
     contrasena = db.Column(db.String(255)) 
 
-# Modelo Tarea
+# Modelo Tarea con fechas y prioridad
 class Tarea(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     descripcion = db.Column(db.String(255), nullable=False)
     completada = db.Column(db.Boolean, default=False)
+    fecha_vencimiento = db.Column(db.Date, nullable=True)
+    prioridad = db.Column(db.String(50), nullable=True)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 
     usuario = db.relationship("Usuario", backref="tareas")
@@ -97,15 +100,41 @@ def crear_tarea():
         return redirect("/")  # Si no está logueado, redirige al login
     
     descripcion = request.form["descripcion"]
+    fecha_vencimiento = request.form["fecha_vencimiento"]
+    prioridad = request.form["prioridad"]
     usuario_id = session["usuario_id"]
     
+    # Convertir la fecha de vencimiento a formato de fecha
+    fecha_vencimiento = datetime.strptime(fecha_vencimiento, "%Y-%m-%d") if fecha_vencimiento else None
+    
     # Crear una nueva tarea
-    nueva_tarea = Tarea(descripcion=descripcion, usuario_id=usuario_id)
+    nueva_tarea = Tarea(descripcion=descripcion, fecha_vencimiento=fecha_vencimiento, prioridad=prioridad, usuario_id=usuario_id)
     db.session.add(nueva_tarea)
     db.session.commit()
     
     flash("Tarea creada exitosamente.")
     return redirect("/tareas_p")  # Redirige a la página de tareas
+
+
+@app.route("/editar_tarea/<int:id>", methods=["POST"])
+def editar_tarea(id):
+    if "usuario_id" not in session:
+        flash("Debes iniciar sesión primero.")
+        return redirect("/")  # Si no está logueado, redirige al login
+    
+    tarea = Tarea.query.get_or_404(id)
+    
+    if tarea.usuario_id != session["usuario_id"]:
+        flash("No tienes permiso para editar esta tarea.")
+        return redirect("/tareas_p")
+    
+    tarea.descripcion = request.form["descripcion"]
+    tarea.fecha_vencimiento = request.form["fecha_vencimiento"]
+    tarea.prioridad = request.form["prioridad"]
+    
+    db.session.commit()
+    flash("Tarea actualizada exitosamente.")
+    return redirect("/tareas_p")
 
 
 @app.route("/eliminar_tarea/<int:id>", methods=["POST"])
@@ -127,4 +156,3 @@ def eliminar_tarea(id):
     
     flash("Tarea eliminada exitosamente.")
     return redirect("/tareas_p")  # Redirige a la página de tareas
-

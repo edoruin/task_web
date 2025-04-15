@@ -39,6 +39,16 @@
     .flash.error {
       color: red;
     }
+
+    .form-editar {
+      display: none;
+      flex-direction: column;
+      margin-top: 10px;
+    }
+
+    .form-editar input, .form-editar select, .form-editar button {
+      margin: 5px 0;
+    }
   </style>
 </head>
 <body>
@@ -57,22 +67,63 @@
 
   <form action="/crear_tarea" method="post">
     <input type="text" name="descripcion" placeholder="Nueva tarea" required>
+    <input type="date" name="fecha_vencimiento">
+    <select name="prioridad">
+      <option value="">Seleccione Prioridad</option>
+      <option value="Baja">Baja</option>
+      <option value="Media">Media</option>
+      <option value="Alta">Alta</option>
+    </select>
     <button type="submit">Agregar</button>
   </form>
 
   <div id="tareas">
     {% for tarea in tareas %}
-      <div class="tarea">
+      <div class="tarea" id="tarea-{{ tarea.id }}">
         <div>
-          <span>{{ tarea.descripcion }}</span>
+          <span>{{ tarea.descripcion }} - 
+          {% if tarea.fecha_vencimiento %} Vence: {{ tarea.fecha_vencimiento }} {% endif %}
+          - Prioridad: {{ tarea.prioridad }}</span>
         </div>
         <div class="acciones">
+          <button type="button" onclick="mostrarFormularioEditar({{ tarea.id }})">Editar</button>
           <form action="/eliminar_tarea/{{ tarea.id }}" method="post">
             <button type="submit">Eliminar</button>
           </form>
         </div>
       </div>
+
+      <!-- Formulario de edición -->
+      <div class="form-editar" id="form-editar-{{ tarea.id }}">
+        <form action="/editar_tarea/{{ tarea.id }}" method="post">
+          <input type="text" name="descripcion" value="{{ tarea.descripcion }}" required>
+          <input type="date" name="fecha_vencimiento" value="{{ tarea.fecha_vencimiento|date('YYYY-MM-DD') }}">
+          <select name="prioridad">
+            <option value="Baja" {% if tarea.prioridad == 'Baja' %}selected{% endif %}>Baja</option>
+            <option value="Media" {% if tarea.prioridad == 'Media' %}selected{% endif %}>Media</option>
+            <option value="Alta" {% if tarea.prioridad == 'Alta' %}selected{% endif %}>Alta</option>
+          </select>
+          <button type="submit">Guardar cambios</button>
+          <button type="button" onclick="cancelarEdicion({{ tarea.id }})">Cancelar</button>
+        </form>
+      </div>
     {% endfor %}
   </div>
+
+  <script>
+    function mostrarFormularioEditar(tareaId) {
+      // Mostrar el formulario de edición
+      document.getElementById('form-editar-' + tareaId).style.display = 'flex';
+      // Ocultar la tarea
+      document.getElementById('tarea-' + tareaId).style.display = 'none';
+    }
+
+    function cancelarEdicion(tareaId) {
+      // Ocultar el formulario de edición
+      document.getElementById('form-editar-' + tareaId).style.display = 'none';
+      // Volver a mostrar la tarea
+      document.getElementById('tarea-' + tareaId).style.display = 'flex';
+    }
+  </script>
 </body>
 </html>
