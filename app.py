@@ -44,6 +44,18 @@ def index():
 def guardar():
     nombre = request.form["nombre"]
     contrasena_plana = request.form["contrasena"]
+
+    # Verificar si el nombre de usuario ya existe
+    usuario_existente = Usuario.query.filter_by(nombre=nombre).first()
+    if usuario_existente:
+        flash("El nombre de usuario ya está registrado. Elige otro.")
+        return redirect("/")
+
+    # (Opcional) Puedes agregar validaciones de contraseña aquí si deseas
+    if len(contrasena_plana) < 6:
+        flash("La contraseña debe tener al menos 6 caracteres.")
+        return redirect("/")
+
     contrasena_hash = generate_password_hash(contrasena_plana)
 
     nuevo_usuario = Usuario(nombre=nombre, contrasena=contrasena_hash)
@@ -51,6 +63,7 @@ def guardar():
     db.session.commit()
     flash("Usuario registrado exitosamente.")
     return redirect("/")
+
 
 # Iniciar sesión
 @app.route("/login", methods=["POST"])
