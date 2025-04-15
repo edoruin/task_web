@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from flask import session
+
 
 app = Flask(__name__)
 app.secret_key = "supersecreto"  # Necesario para usar sesiones y mensajes flash
@@ -12,11 +14,20 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# Modelo de Usuario
+# Modelo de Usuario - CREACION DE TABLAS
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), unique=True)
     contrasena = db.Column(db.String(255)) 
+
+#modelo tareas
+class Tarea(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    descripcion = db.Column(db.String(255), nullable=False)
+    completada = db.Column(db.Boolean, default=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
+
+    usuario = db.relationship("Usuario", backref="tareas")
 
 # Crear las tablas si no existen
 with app.app_context(): 
@@ -69,6 +80,35 @@ def logout():
     session.pop("usuario", None)
     flash("Sesión cerrada.")
     return redirect("/")
+
+
+# Ruta para mostrar tareas
+@app.route("/tareas_p")
+def tareas_p():
+    if "usuario_id" not in session:
+        return redirect("/")
+    usuario_id = session["usuario_id"]
+    tareas = Tarea.query.filter_by(usuario_id=usuario_id).all()
+    return render_template("tareas_p.html", tareas=tareas, usuario_id=usuario_id)
+
+# Ruta para crear tarea
+@app.route("/crear_tarea", methods=["POST"])
+def crear_tarea():
+    descripcion = request.form["descripcion"]
+    usuario_id = request.form["usuario_id"]
+    nueva = Tarea(descripcion=descripcion, usuario_id=usuario_id)
+    db.session.add(nueva)
+    db.session.commit()
+    return redirect("/tareas_p")
+
+# Ruta para borrar tarea
+@app.route("/borrar_tarea/<int:id>", methods=["POST"])
+def borrar_tarea(id):
+    tarea = Tarea.query.get_or_404(id)
+    db.session.delete(tarea)
+    db.session.commit()
+    return redirect("/tareas_p")
+
 
 if __name__ == '__main__':
     app.run(debug=True)

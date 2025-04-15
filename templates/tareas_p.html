@@ -1,14 +1,60 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>Tareas</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+  <style>
+    .tarea {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #999;
+      margin-right: 10px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .checkbox.activa {
+      background-color: limegreen;
+    }
+
+    .acciones {
+      display: flex;
+      gap: 10px;
+    }
+  </style>
 </head>
 <body>
-  <div class="contenido">
-    <h1>Hola, {{ session['usuario'] }}. Aquí puedes gestionar tus tareas.</h1>
-    <a href="/logout">Cerrar sesión</a>
+  <h2>Mis tareas</h2>
+
+  <form action="/crear_tarea" method="post">
+    <input type="text" name="descripcion" placeholder="Nueva tarea" required>
+    <input type="hidden" name="usuario_id" value="{{ usuario_id }}">
+    <button type="submit">Agregar</button>
+  </form>
+
+  <div id="tareas">
+    {% for tarea in tareas %}
+      <div class="tarea">
+        <div>
+          <div class="checkbox" onclick="this.classList.toggle('activa')"></div>
+          <span>{{ tarea.descripcion }}</span>
+        </div>
+        <div class="acciones">
+          <form action="/borrar_tarea/{{ tarea.id }}" method="post">
+            <button type="submit">Eliminar</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
   </div>
 </body>
 </html>
