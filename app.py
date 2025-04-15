@@ -10,15 +10,17 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-#crea las tablas de la base de datos
-with app.app_context(): 
-    db.create_all()
+
 
 # Modelo de ejemplo
-class Usuario(db.Model):
+class Usuario(db.Model):a
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100))
     correo = db.Column(db.String(120), unique=True)
+
+#crea las tablas de la base de datos
+with app.app_context(): 
+    db.create_all()
 
 # Ruta principal
 @app.route("/")
