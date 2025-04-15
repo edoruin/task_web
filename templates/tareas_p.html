@@ -50,6 +50,10 @@
 </head>
 <body>
   <h2>Mis tareas</h2>
+<!-- Botón para cerrar sesión -->
+<form action="/logout" method="get" style="margin-bottom: 20px;">
+    <button type="submit">Cerrar sesión</button>
+  </form>
 
   {% with messages = get_flashed_messages() %}
     {% if messages %}
