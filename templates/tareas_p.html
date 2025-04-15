@@ -32,13 +32,8 @@
       margin: 5px 0;
     }
 
-    .flash.success {
-      color: green;
-    }
-
-    .flash.error {
-      color: red;
-    }
+    .flash.success { color: green; }
+    .flash.error { color: red; }
 
     .form-editar {
       display: none;
@@ -46,7 +41,9 @@
       margin-top: 10px;
     }
 
-    .form-editar input, .form-editar select, .form-editar button {
+    .form-editar input,
+    .form-editar select,
+    .form-editar button {
       margin: 5px 0;
     }
   </style>
@@ -54,7 +51,6 @@
 <body>
   <h2>Mis tareas</h2>
 
-  <!-- Mostrar mensajes flash -->
   {% with messages = get_flashed_messages() %}
     {% if messages %}
       <div class="flash-messages">
@@ -81,9 +77,13 @@
     {% for tarea in tareas %}
       <div class="tarea" id="tarea-{{ tarea.id }}">
         <div>
-          <span>{{ tarea.descripcion }} - 
-          {% if tarea.fecha_vencimiento %} Vence: {{ tarea.fecha_vencimiento }} {% endif %}
-          - Prioridad: {{ tarea.prioridad }}</span>
+          <span>
+            {{ tarea.descripcion }}
+            {% if tarea.fecha_vencimiento %}
+              - Vence: {{ tarea.fecha_vencimiento }}
+            {% endif %}
+            - Prioridad: {{ tarea.prioridad }}
+          </span>
         </div>
         <div class="acciones">
           <button type="button" onclick="mostrarFormularioEditar({{ tarea.id }})">Editar</button>
@@ -93,7 +93,6 @@
         </div>
       </div>
 
-      <!-- Formulario de edición -->
       <div class="form-editar" id="form-editar-{{ tarea.id }}">
         <form action="/editar_tarea/{{ tarea.id }}" method="post">
           <input type="text" name="descripcion" value="{{ tarea.descripcion }}" required>
@@ -112,16 +111,12 @@
 
   <script>
     function mostrarFormularioEditar(tareaId) {
-      // Mostrar el formulario de edición
       document.getElementById('form-editar-' + tareaId).style.display = 'flex';
-      // Ocultar la tarea
       document.getElementById('tarea-' + tareaId).style.display = 'none';
     }
 
     function cancelarEdicion(tareaId) {
-      // Ocultar el formulario de edición
       document.getElementById('form-editar-' + tareaId).style.display = 'none';
-      // Volver a mostrar la tarea
       document.getElementById('tarea-' + tareaId).style.display = 'flex';
     }
   </script>
