@@ -94,12 +94,15 @@ def tareas_p():
 # Ruta para crear tarea
 @app.route("/crear_tarea", methods=["POST"])
 def crear_tarea():
+    if "usuario_id" not in session:
+        return redirect("/")
     descripcion = request.form["descripcion"]
-    usuario_id = request.form["usuario_id"]
+    usuario_id = session["usuario_id"]  # ✅ lo tomas directo del session
     nueva = Tarea(descripcion=descripcion, usuario_id=usuario_id)
     db.session.add(nueva)
     db.session.commit()
     return redirect("/tareas_p")
+
 
 # Ruta para borrar tarea
 @app.route("/borrar_tarea/<int:id>", methods=["POST"])
