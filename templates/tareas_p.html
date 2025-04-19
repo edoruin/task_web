@@ -108,7 +108,7 @@
   <form class="logout-button" action="/logout" method="get">
     <button type="submit">Cerrar sesión</button>
   </form>
-
+<div class="container">
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <div class="flash-messages">
@@ -118,7 +118,7 @@
         </div>
       {% endif %}
     {% endwith %}
-  
+</div>  
   <div class="container">
     <h2>Mis tareas</h2>
 
