@@ -10,21 +10,33 @@
       background: linear-gradient(to bottom, #000000, #333333);
       margin: 0;
       padding: 0;
+      min-height: 100vh;
     }
 
     .logout-button {
-      position: absolute;
+      position: fixed;
       top: 20px;
       right: 20px;
+      z-index: 999;
+    }
+
+    .logout-button button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
     .container {
       max-width: 600px;
-      margin: 100px auto 40px;
-      background: white;
+      margin: 120px auto 40px;
+      background: #1e1e1e;
+      color: white;
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     }
 
     .tarea {
@@ -33,7 +45,7 @@
       justify-content: space-between;
       margin-bottom: 10px;
       padding: 10px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #555;
     }
 
     .acciones {
@@ -41,22 +53,33 @@
       gap: 10px;
     }
 
+    .acciones button,
+    .acciones form button,
+    form button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
     .flash-messages {
       padding: 10px;
       margin-bottom: 20px;
-      background-color: #f0f0f0;
-      border: 1px solid #ccc;
+      background-color: #333;
+      border: 1px solid #444;
       border-radius: 5px;
     }
 
     .flash {
-      color: #333;
+      color: #eee;
       font-size: 16px;
       margin: 5px 0;
     }
 
-    .flash.success { color: green; }
-    .flash.error { color: red; }
+    .flash.success { color: lightgreen; }
+    .flash.error { color: tomato; }
 
     .form-editar {
       display: none;
@@ -77,6 +100,7 @@
 
     h2 {
       text-align: center;
+      color: white;
     }
   </style>
 </head>
