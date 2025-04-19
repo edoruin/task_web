@@ -145,41 +145,45 @@
       <button type="submit">Agregar</button>
     </form>
 
-    <div id="tareas">
-      {% for tarea in tareas %}
-        <div class="tarea" id="tarea-{{ tarea.id }}">
-          <div>
-            <span>
-              {{ tarea.descripcion }}
-              {% if tarea.fecha_vencimiento %}
-                - Vence: {{ tarea.fecha_vencimiento }}
-              {% endif %}
-              - Prioridad: {{ tarea.prioridad }}
-            </span>
-          </div>
-          <div class="acciones">
-            <button type="button" onclick="mostrarFormularioEditar({{ tarea.id }})">Editar</button>
-            <form action="/eliminar_tarea/{{ tarea.id }}" method="post">
-              <button type="submit">Eliminar</button>
-            </form>
-          </div>
-        </div>
-
-        <div class="form-editar" id="form-editar-{{ tarea.id }}">
-          <form action="/editar_tarea/{{ tarea.id }}" method="post">
-            <input type="text" name="descripcion" value="{{ tarea.descripcion }}" required>
-            <input type="date" name="fecha_vencimiento" value="{{ tarea.fecha_vencimiento.strftime('%Y-%m-%d') if tarea.fecha_vencimiento }}">
-            <select name="prioridad">
-              <option value="Baja" {% if tarea.prioridad == 'Baja' %}selected{% endif %}>Baja</option>
-              <option value="Media" {% if tarea.prioridad == 'Media' %}selected{% endif %}>Media</option>
-              <option value="Alta" {% if tarea.prioridad == 'Alta' %}selected{% endif %}>Alta</option>
-            </select>
-            <button type="submit">Guardar cambios</button>
-            <button type="button" onclick="cancelarEdicion({{ tarea.id }})">Cancelar</button>
-          </form>
-        </div>
-      {% endfor %}
+<div id="tareas">
+  {% for tarea in tareas %}
+    <div class="tarea" id="tarea-{{ tarea.id }}">
+      <div>
+        <span>
+          {{ tarea.descripcion }}
+          {% if tarea.fecha_vencimiento %}
+            - Vence: {{ tarea.fecha_vencimiento }}
+          {% endif %}
+          - Prioridad: {{ tarea.prioridad }}
+          - Estado: {% if tarea.completada %}✅ Completada{% else %}🕒 Pendiente{% endif %}
+        </span>
+      </div>
+      <div class="acciones">
+        <button type="button" onclick="mostrarFormularioEditar({{ tarea.id }})">Editar</button>
+        <form action="/eliminar_tarea/{{ tarea.id }}" method="post">
+          <button type="submit">Eliminar</button>
+        </form>
+      </div>
     </div>
+
+    <div class="form-editar" id="form-editar-{{ tarea.id }}">
+      <form action="/editar_tarea/{{ tarea.id }}" method="post">
+        <input type="text" name="descripcion" value="{{ tarea.descripcion }}" required>
+        <input type="date" name="fecha_vencimiento" value="{{ tarea.fecha_vencimiento.strftime('%Y-%m-%d') if tarea.fecha_vencimiento }}">
+        <select name="prioridad">
+          <option value="Baja" {% if tarea.prioridad == 'Baja' %}selected{% endif %}>Baja</option>
+          <option value="Media" {% if tarea.prioridad == 'Media' %}selected{% endif %}>Media</option>
+          <option value="Alta" {% if tarea.prioridad == 'Alta' %}selected{% endif %}>Alta</option>
+        </select>
+        <label>
+          <input type="checkbox" name="completada" {% if tarea.completada %}checked{% endif %}> Completada
+        </label>
+        <button type="submit">Guardar cambios</button>
+        <button type="button" onclick="cancelarEdicion({{ tarea.id }})">Cancelar</button>
+      </form>
+    </div>
+  {% endfor %}
+</div>
   </div>
 
   <script>
