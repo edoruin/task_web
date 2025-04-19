@@ -7,7 +7,7 @@ from datetime import datetime
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = "supersecreto"
 
-# Reemplaza con tu URL real de base de datos
+# Configuración de base de datos (SQLite por defecto)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///tareas.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -38,34 +38,37 @@ def index():
 
 @app.route("/autenticacion", methods=["POST"])
 def autenticacion():
-    nombre = request.form["usuario"]
-    contrasena_plana = request.form["contrasena"]
     accion = request.form["accion"]
+    usuario = request.form["usuario"]
+    contrasena = request.form["contrasena"]
 
-    if accion == "registrar":
-        if Usuario.query.filter_by(nombre=nombre).first():
+    if accion == "registro":
+        if Usuario.query.filter_by(nombre=usuario).first():
             flash("El nombre de usuario ya está registrado.")
             return redirect("/")
-        if len(contrasena_plana) < 6:
+        if len(contrasena) < 6:
             flash("La contraseña debe tener al menos 6 caracteres.")
             return redirect("/")
-
-        contrasena_hash = generate_password_hash(contrasena_plana)
-        nuevo_usuario = Usuario(nombre=nombre, contrasena=contrasena_hash)
+        contrasena_hash = generate_password_hash(contrasena)
+        nuevo_usuario = Usuario(nombre=usuario, contrasena=contrasena_hash)
         db.session.add(nuevo_usuario)
         db.session.commit()
         flash("Usuario registrado exitosamente.")
         return redirect("/")
 
     elif accion == "login":
-        user = Usuario.query.filter_by(nombre=nombre).first()
-        if user and check_password_hash(user.contrasena, contrasena_plana):
+        user = Usuario.query.filter_by(nombre=usuario).first()
+        if user and check_password_hash(user.contrasena, contrasena):
             session["usuario_id"] = user.id
             flash("Inicio de sesión exitoso.")
             return redirect("/tareas")
         else:
             flash("Credenciales incorrectas.")
             return redirect("/")
+
+    else:
+        flash("Acción inválida.")
+        return redirect("/")
 
 @app.route("/logout")
 def logout():
@@ -92,7 +95,7 @@ def tareas_p():
 def crear_tarea():
     if "usuario_id" not in session:
         return redirect("/")
-
+    
     descripcion = request.form["descripcion"]
     fecha_vencimiento = request.form.get("fecha_vencimiento")
     prioridad = request.form.get("prioridad")
