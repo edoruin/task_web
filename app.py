@@ -36,38 +36,36 @@ with app.app_context():
 def index():
     return render_template("index.html")
 
-@app.route("/guardar", methods=["POST"])
-def guardar():
-    nombre = request.form["nombre"]
+@app.route("/autenticacion", methods=["POST"])
+def autenticacion():
+    nombre = request.form["usuario"]
     contrasena_plana = request.form["contrasena"]
+    accion = request.form["accion"]
 
-    if Usuario.query.filter_by(nombre=nombre).first():
-        flash("El nombre de usuario ya está registrado.")
+    if accion == "registrar":
+        if Usuario.query.filter_by(nombre=nombre).first():
+            flash("El nombre de usuario ya está registrado.")
+            return redirect("/")
+        if len(contrasena_plana) < 6:
+            flash("La contraseña debe tener al menos 6 caracteres.")
+            return redirect("/")
+
+        contrasena_hash = generate_password_hash(contrasena_plana)
+        nuevo_usuario = Usuario(nombre=nombre, contrasena=contrasena_hash)
+        db.session.add(nuevo_usuario)
+        db.session.commit()
+        flash("Usuario registrado exitosamente.")
         return redirect("/")
-    if len(contrasena_plana) < 6:
-        flash("La contraseña debe tener al menos 6 caracteres.")
-        return redirect("/")
 
-    contrasena_hash = generate_password_hash(contrasena_plana)
-    nuevo_usuario = Usuario(nombre=nombre, contrasena=contrasena_hash)
-    db.session.add(nuevo_usuario)
-    db.session.commit()
-    flash("Usuario registrado exitosamente.")
-    return redirect("/")
-
-@app.route("/login", methods=["POST"])
-def login():
-    usuario = request.form["usuario"]
-    password = request.form["password"]
-    user = Usuario.query.filter_by(nombre=usuario).first()
-
-    if user and check_password_hash(user.contrasena, password):
-        session["usuario_id"] = user.id
-        flash("Inicio de sesión exitoso.")
-        return redirect("/tareas")
-    else:
-        flash("Credenciales incorrectas.")
-        return redirect("/")
+    elif accion == "login":
+        user = Usuario.query.filter_by(nombre=nombre).first()
+        if user and check_password_hash(user.contrasena, contrasena_plana):
+            session["usuario_id"] = user.id
+            flash("Inicio de sesión exitoso.")
+            return redirect("/tareas")
+        else:
+            flash("Credenciales incorrectas.")
+            return redirect("/")
 
 @app.route("/logout")
 def logout():
@@ -94,7 +92,7 @@ def tareas_p():
 def crear_tarea():
     if "usuario_id" not in session:
         return redirect("/")
-    
+
     descripcion = request.form["descripcion"]
     fecha_vencimiento = request.form.get("fecha_vencimiento")
     prioridad = request.form.get("prioridad")
