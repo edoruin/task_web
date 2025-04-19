@@ -1,38 +1,16 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Gestor de Tareas</title>
+  <title>Tareas</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #000000, #333333);
-      margin: 0;
-      padding: 0;
-    }
-
-    .logout-button {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 100px auto 40px;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
     .tarea {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 10px;
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
+      padding: 5px;
+      border: 1px solid #ccc;
     }
 
     .acciones {
@@ -65,86 +43,74 @@
 
     .form-editar input,
     .form-editar select,
-    .form-editar button,
-    form input,
-    form select,
-    form button {
-      width: 100%;
-      padding: 10px;
+    .form-editar button {
       margin: 5px 0;
-    }
-
-    h2 {
-      text-align: center;
     }
   </style>
 </head>
 <body>
-  <!-- Botón para cerrar sesión -->
-  <form class="logout-button" action="/logout" method="get">
+  <h2>Mis tareas</h2>
+<!-- Botón para cerrar sesión -->
+<form action="/logout" method="get" style="margin-bottom: 20px;">
     <button type="submit">Cerrar sesión</button>
   </form>
 
-  <div class="container">
-    <h2>Mis tareas</h2>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for message in messages %}
+          <p class="flash">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <div class="flash-messages">
-          {% for message in messages %}
-            <p class="flash">{{ message }}</p>
-          {% endfor %}
+  <form action="/crear_tarea" method="post">
+    <input type="text" name="descripcion" placeholder="Nueva tarea" required>
+    <input type="date" name="fecha_vencimiento">
+    <select name="prioridad">
+      <option value="">Seleccione Prioridad</option>
+      <option value="Baja">Baja</option>
+      <option value="Media">Media</option>
+      <option value="Alta">Alta</option>
+    </select>
+    <button type="submit">Agregar</button>
+  </form>
+
+  <div id="tareas">
+    {% for tarea in tareas %}
+      <div class="tarea" id="tarea-{{ tarea.id }}">
+        <div>
+          <span>
+            {{ tarea.descripcion }}
+            {% if tarea.fecha_vencimiento %}
+              - Vence: {{ tarea.fecha_vencimiento }}
+            {% endif %}
+            - Prioridad: {{ tarea.prioridad }}
+          </span>
         </div>
-      {% endif %}
-    {% endwith %}
-
-    <form action="/crear_tarea" method="post">
-      <input type="text" name="descripcion" placeholder="Nueva tarea" required>
-      <input type="date" name="fecha_vencimiento">
-      <select name="prioridad">
-        <option value="">Seleccione Prioridad</option>
-        <option value="Baja">Baja</option>
-        <option value="Media">Media</option>
-        <option value="Alta">Alta</option>
-      </select>
-      <button type="submit">Agregar</button>
-    </form>
-
-    <div id="tareas">
-      {% for tarea in tareas %}
-        <div class="tarea" id="tarea-{{ tarea.id }}">
-          <div>
-            <span>
-              {{ tarea.descripcion }}
-              {% if tarea.fecha_vencimiento %}
-                - Vence: {{ tarea.fecha_vencimiento }}
-              {% endif %}
-              - Prioridad: {{ tarea.prioridad }}
-            </span>
-          </div>
-          <div class="acciones">
-            <button type="button" onclick="mostrarFormularioEditar({{ tarea.id }})">Editar</button>
-            <form action="/eliminar_tarea/{{ tarea.id }}" method="post">
-              <button type="submit">Eliminar</button>
-            </form>
-          </div>
-        </div>
-
-        <div class="form-editar" id="form-editar-{{ tarea.id }}">
-          <form action="/editar_tarea/{{ tarea.id }}" method="post">
-            <input type="text" name="descripcion" value="{{ tarea.descripcion }}" required>
-            <input type="date" name="fecha_vencimiento" value="{{ tarea.fecha_vencimiento.strftime('%Y-%m-%d') if tarea.fecha_vencimiento }}">
-            <select name="prioridad">
-              <option value="Baja" {% if tarea.prioridad == 'Baja' %}selected{% endif %}>Baja</option>
-              <option value="Media" {% if tarea.prioridad == 'Media' %}selected{% endif %}>Media</option>
-              <option value="Alta" {% if tarea.prioridad == 'Alta' %}selected{% endif %}>Alta</option>
-            </select>
-            <button type="submit">Guardar cambios</button>
-            <button type="button" onclick="cancelarEdicion({{ tarea.id }})">Cancelar</button>
+        <div class="acciones">
+          <button type="button" onclick="mostrarFormularioEditar({{ tarea.id }})">Editar</button>
+          <form action="/eliminar_tarea/{{ tarea.id }}" method="post">
+            <button type="submit">Eliminar</button>
           </form>
         </div>
-      {% endfor %}
-    </div>
+      </div>
+
+      <div class="form-editar" id="form-editar-{{ tarea.id }}">
+        <form action="/editar_tarea/{{ tarea.id }}" method="post">
+          <input type="text" name="descripcion" value="{{ tarea.descripcion }}" required>
+          <input type="date" name="fecha_vencimiento" value="{{ tarea.fecha_vencimiento.strftime('%Y-%m-%d') if tarea.fecha_vencimiento }}">
+          <select name="prioridad">
+            <option value="Baja" {% if tarea.prioridad == 'Baja' %}selected{% endif %}>Baja</option>
+            <option value="Media" {% if tarea.prioridad == 'Media' %}selected{% endif %}>Media</option>
+            <option value="Alta" {% if tarea.prioridad == 'Alta' %}selected{% endif %}>Alta</option>
+          </select>
+          <button type="submit">Guardar cambios</button>
+          <button type="button" onclick="cancelarEdicion({{ tarea.id }})">Cancelar</button>
+        </form>
+      </div>
+    {% endfor %}
   </div>
 
   <script>
