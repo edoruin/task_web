@@ -7,7 +7,7 @@ from datetime import datetime
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = "supersecreto"
 
-# Configuración de base de datos (SQLite por defecto)
+# Reemplaza con tu URL real de base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///tareas.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -36,38 +36,37 @@ with app.app_context():
 def index():
     return render_template("index.html")
 
-@app.route("/autenticacion", methods=["POST"])
-def autenticacion():
-    accion = request.form["accion"]
-    usuario = request.form["usuario"]
-    contrasena = request.form["contrasena"]
+@app.route("/guardar", methods=["POST"])
+def guardar():
+    nombre = request.form["nombre"]
+    contrasena_plana = request.form["contrasena"]
 
-    if accion == "registro":
-        if Usuario.query.filter_by(nombre=usuario).first():
-            flash("El nombre de usuario ya está registrado.")
-            return redirect("/")
-        if len(contrasena) < 6:
-            flash("La contraseña debe tener al menos 6 caracteres.")
-            return redirect("/")
-        contrasena_hash = generate_password_hash(contrasena)
-        nuevo_usuario = Usuario(nombre=usuario, contrasena=contrasena_hash)
-        db.session.add(nuevo_usuario)
-        db.session.commit()
-        flash("Usuario registrado exitosamente.")
+    if Usuario.query.filter_by(nombre=nombre).first():
+        flash("El nombre de usuario ya está registrado.")
+        return redirect("/")
+    if len(contrasena_plana) < 6:
+        flash("La contraseña debe tener al menos 6 caracteres.")
         return redirect("/")
 
-    elif accion == "login":
-        user = Usuario.query.filter_by(nombre=usuario).first()
-        if user and check_password_hash(user.contrasena, contrasena):
-            session["usuario_id"] = user.id
-            flash("Inicio de sesión exitoso.")
-            return redirect("/tareas")
-        else:
-            flash("Credenciales incorrectas.")
-            return redirect("/")
+    contrasena_hash = generate_password_hash(contrasena_plana)
+    nuevo_usuario = Usuario(nombre=nombre, contrasena=contrasena_hash)
+    db.session.add(nuevo_usuario)
+    db.session.commit()
+    flash("Usuario registrado exitosamente.")
+    return redirect("/")
 
+@app.route("/login", methods=["POST"])
+def login():
+    usuario = request.form["usuario"]
+    password = request.form["password"]
+    user = Usuario.query.filter_by(nombre=usuario).first()
+
+    if user and check_password_hash(user.contrasena, password):
+        session["usuario_id"] = user.id
+        flash("Inicio de sesión exitoso.")
+        return redirect("/tareas")
     else:
-        flash("Acción inválida.")
+        flash("Credenciales incorrectas.")
         return redirect("/")
 
 @app.route("/logout")
