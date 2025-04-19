@@ -109,6 +109,16 @@
     <button type="submit">Cerrar sesión</button>
   </form>
 
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <p class="flash">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+  
   <div class="container">
     <h2>Mis tareas</h2>
 
