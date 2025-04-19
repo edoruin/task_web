@@ -4,20 +4,99 @@
   <meta charset="UTF-8">
   <title>Gestor de Tareas</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  <style>
+   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #000000, #333333);
+      background-color: #f2f3f5;
       margin: 0;
       padding: 0;
-      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 60px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: left;
+      font-size: 32px;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    form[action="/crear_tarea"] input,
+    form[action="/crear_tarea"] textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    form[action="/crear_tarea"] button {
+      width: 100%;
+      background-color: #e6e6e6;
+      padding: 14px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .tarea {
+      padding: 15px 0;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tarea span {
+      font-size: 18px;
+    }
+
+    .tarea.completada span {
+      text-decoration: line-through;
+      color: #777;
+    }
+
+    .tarea .acciones {
+      display: flex;
+      gap: 8px;
+    }
+
+    .acciones button,
+    .acciones form button {
+      padding: 6px 10px;
+      font-size: 16px;
+      border: 1px solid #aaa;
+      border-radius: 3px;
+      background-color: #f5f5f5;
+      cursor: pointer;
+    }
+
+    .form-editar {
+      margin-top: 10px;
+    }
+
+    .form-editar input,
+    .form-editar select {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
 
     .logout-button {
       position: fixed;
       top: 20px;
       right: 20px;
-      z-index: 999;
     }
 
     .logout-button button {
@@ -27,80 +106,6 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 120px auto 40px;
-      background: #1e1e1e;
-      color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-    }
-
-    .tarea {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      padding: 10px;
-      border-bottom: 1px solid #555;
-    }
-
-    .acciones {
-      display: flex;
-      gap: 10px;
-    }
-
-    .acciones button,
-    .acciones form button,
-    form button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .flash-messages {
-      padding: 10px;
-      margin-bottom: 20px;
-      background-color: #333;
-      border: 1px solid #444;
-      border-radius: 5px;
-    }
-
-    .flash {
-      color: #eee;
-      font-size: 16px;
-      margin: 5px 0;
-    }
-
-    .flash.success { color: lightgreen; }
-    .flash.error { color: tomato; }
-
-    .form-editar {
-      display: none;
-      flex-direction: column;
-      margin-top: 10px;
-    }
-
-    .form-editar input,
-    .form-editar select,
-    .form-editar button,
-    form input,
-    form select,
-    form button {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-    }
-
-    h2 {
-      text-align: center;
-      color: white;
     }
   </style>
 </head>
