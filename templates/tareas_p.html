@@ -79,7 +79,12 @@
       font-size: 16px;
       margin: 5px 0;
     }
-
+    
+    .p_messag {
+      text-align: center;
+      color: white;
+    }
+    
     .flash.success { color: lightgreen; }
     .flash.error { color: tomato; }
 
@@ -91,8 +96,7 @@
 
     form input {
       width: 96%;
-      padding: 10px; 
-      margin: 5px 0;
+      padding: 10px;
     }
     .form-editar input,
     .form-editar select,
@@ -115,7 +119,7 @@
   <form class="logout-button" action="/logout" method="get">
     <button type="submit">Cerrar sesión</button>
   </form>
-<p>
+<p class="p_messag">
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <div class="flash-messages">
