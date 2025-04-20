@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-  <h1> <n> Autenticación </n></h1>
+
   <div class="container">
     <!-- Mostrar mensajes flash -->
     {% with messages = get_flashed_messages() %}
@@ -21,13 +21,14 @@
 
      <!-- Formulario único -->
     <div class="formulario">
+      <h1> <n> GESTOR DE TAREAS </n></h1>
       <h2>Autenticación</h2>
       <form action="/autenticacion" method="post">
         <label>Usuario:</label>
         <input type="text" name="usuario" required><br>
 
         <label>Contraseña:</label>
-        <input type="password" name="contrasena" required><br>
+        <input type="password" name="password" required><br>
 
         <select name="accion" required>
           <option value="login">Iniciar Sesión</option>
