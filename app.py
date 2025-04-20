@@ -188,6 +188,20 @@ def eliminar_tarea(id):
     flash("Tarea eliminada exitosamente.")
     return redirect("/tareas_p")
 
+@app.route("/toggle_tarea/<int:id>", methods=["POST"])
+def toggle_tarea(id):
+    if "usuario_id" not in session:
+        return redirect("/")
+
+    tarea = Tarea.query.get_or_404(id)
+
+    if tarea.usuario_id != session["usuario_id"]:
+        flash("No tienes permiso para modificar esta tarea.")
+        return redirect("/tareas_p")
+
+    tarea.completada = not tarea.completada  # Cambia el estado de completada a su opuesto
+    db.session.commit()
+    return redirect("/tareas_p")
 
 
 if __name__ == "__main__":
