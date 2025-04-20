@@ -36,6 +36,41 @@ with app.app_context():
 def index():
     return render_template("index.html")
 
+
+@app.route("/autenticacion", methods=["POST"])
+def autenticacion():
+    accion = request.form["accion"]
+    usuario = request.form["usuario"]
+    contrasena = request.form["password"]
+
+    if accion == "registro":
+        if Usuario.query.filter_by(nombre=usuario).first():
+            flash("El nombre de usuario ya está registrado.")
+            return redirect("/")
+        if len(contrasena) < 6:
+            flash("La contraseña debe tener al menos 6 caracteres.")
+            return redirect("/")
+        contrasena_hash = generate_password_hash(contrasena)
+        nuevo_usuario = Usuario(nombre=usuario, contrasena=contrasena_hash)
+        db.session.add(nuevo_usuario)
+        db.session.commit()
+        flash("Usuario registrado exitosamente.")
+        return redirect("/")
+    
+    elif accion == "login":
+        user = Usuario.query.filter_by(nombre=usuario).first()
+        if user and check_password_hash(user.contrasena, contrasena):
+            session["usuario_id"] = user.id
+            flash("Inicio de sesión exitoso.")
+            return redirect("/tareas")
+        else:
+            flash("Credenciales incorrectas.")
+            return redirect("/")
+
+    else:
+        flash("Acción inválida.")
+        return redirect("/")
+
 @app.route("/guardar", methods=["POST"])
 def guardar():
     nombre = request.form["nombre"]
