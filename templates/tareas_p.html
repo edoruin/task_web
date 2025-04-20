@@ -113,7 +113,6 @@
       color: white;
     }
     .estado-completada {
-      color: #1e90ff; /* azul tipo dodgerblue */
       font-weight: bold;
     }
 
@@ -167,8 +166,8 @@
       {% endif %}
       - Prioridad: {{ tarea.prioridad }}
       - Estado: 
-      <span style="color: #1e90ff; font-weight: bold;" class="{% if tarea.completada %}estado-completada{% endif %}">
-        {% if tarea.completada %}✅ Completada{% else %}🕒 Pendiente{% endif %}
+      <span class="{% if tarea.completada %}estado-completada{% endif %}">
+        {% if tarea.completada %} Completada{% else %}🕒 Pendiente{% endif %}
       </span>
     </span>
   </div>
