@@ -197,6 +197,7 @@
               <option value="Media" {% if tarea.prioridad == 'Media' %}selected{% endif %}>Media</option>
               <option value="Alta" {% if tarea.prioridad == 'Alta' %}selected{% endif %}>Alta</option>
             </select>
+            
             <label>
               <input type="checkbox" name="completada" {% if tarea.completada %}checked{% endif %}> Completada
             </label>
