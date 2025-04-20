@@ -7,6 +7,8 @@ app = Flask(__name__)
 app.secret_key = "secreto"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tareas.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
 
 
 class Tarea(db.Model):
