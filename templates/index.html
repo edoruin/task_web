@@ -18,27 +18,22 @@
       {% endif %}
     {% endwith %}
 
-    <!-- Registro -->
+     <!-- Formulario único -->
     <div class="formulario">
-      <h2>Registrar Usuario</h2>
-      <form action="/guardar" method="post">
-        <label>Nombre:</label>
-        <input type="text" name="nombre" required><br>
-        <label>Contraseña:</label>
-        <input type="password" name="contrasena" required><br>
-        <button type="submit">Guardar</button>
-      </form>
-    </div>
-
-    <!-- Inicio de sesión -->
-    <div class="formulario">
-      <h2>Iniciar Sesión</h2>
-      <form action="/login" method="post">
+      <h2>Autenticación</h2>
+      <form action="/autenticacion" method="post">
         <label>Usuario:</label>
         <input type="text" name="usuario" required><br>
+
         <label>Contraseña:</label>
-        <input type="password" name="password" required><br>
-        <button type="submit">Entrar</button>
+        <input type="password" name="contrasena" required><br>
+
+        <select name="accion" required>
+          <option value="login">Iniciar Sesión</option>
+          <option value="registro">Registrarse</option>
+        </select><br><br>
+
+        <button type="submit">Aceptar</button>
       </form>
     </div>
   </div>
