@@ -157,31 +157,36 @@
       <button type="submit">Agregar</button>
     </form>
 
-  <div class="tarea" id="tarea-{{ tarea.id }}">
-  <div>
-    <span>
-      {{ tarea.descripcion }}
-      {% if tarea.fecha_vencimiento %}
-        - Vence: {{ tarea.fecha_vencimiento }}
-      {% endif %}
-      - Prioridad: {{ tarea.prioridad }}
-      - Estado: 
-      <span >
-        {% if tarea.completada %} Completada{% else %}🕒 Pendiente{% endif %}
-      </span>
-    </span>
-  </div>
+    <div id="tareas">
+      {% for tarea in tareas %}
+        <div class="tarea" id="tarea-{{ tarea.id }}">
+          <div>
+            <span>
+              {{ tarea.descripcion }}
+              {% if tarea.fecha_vencimiento %}
+                - Vence: {{ tarea.fecha_vencimiento }}
+              {% endif %}
+              - Prioridad: {{ tarea.prioridad }}
+              - Estado: 
+              <span class="{% if tarea.completada %}estado-completada{% endif %}">
+                {% if tarea.completada %} Completada{% else %}🕒 Pendiente{% endif %}
+              </span>
 
-  <div class="acciones">
-    <form action="/toggle_tarea/{{ tarea.id }}" method="post" style="display: inline;">
-      <input type="checkbox" name="completada" class="checkbox-grande" onchange="this.form.submit()" {% if tarea.completada %}checked{% endif %}>
-    </form>
+            </span>
+          </div>
+          
+          <div class="acciones">
+            <form action="/toggle_tarea/{{ tarea.id }}" method="post" style="display: inline;">
+              <input type="checkbox" name="completada" class="checkbox-grande" onchange="this.form.submit()" {% if tarea.completada %}checked{% endif %}>
+            </form>
+            
+            <button type="button" onclick="mostrarFormularioEditar({{ tarea.id }})">Editar</button>
+            <form action="/eliminar_tarea/{{ tarea.id }}" method="post">
+              <button type="submit">Eliminar</button>
+            </form>
+          </div>
+        </div>
     
-    <button type="button" onclick="mostrarFormularioEditar({{ tarea.id }})">Editar</button>
-    <form action="/eliminar_tarea/{{ tarea.id }}" method="post">
-      <button type="submit">Eliminar</button>
-    </form>
-  </div>
 </div>
 
     
