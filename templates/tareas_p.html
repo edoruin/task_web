@@ -169,7 +169,7 @@
               {% endif %}
               - Prioridad: {{ tarea.prioridad }}
               - Estado: 
-              <span class="{% if tarea.completada %}estado-completada{% endif %}">
+              <span style="color: #1e90ff; font-weight: bold;" class="{% if tarea.completada %}estado-completada{% endif %}">
                 {% if tarea.completada %}✅ Completada{% else %}🕒 Pendiente{% endif %}
               </span>
 
