@@ -1,3 +1,9 @@
+"""
+Fecha de Creacion: 21 de Abril del 2025
+
+Licencia: MIT License
+"""
+#Importando librerias
 from flask import Flask, render_template, request, redirect, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
