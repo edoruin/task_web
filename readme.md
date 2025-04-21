@@ -9,6 +9,11 @@ Este proyecto es una plataforma web de gestión de usuarios y tareas, inspirada 
 - **Flask-SQLAlchemy**
 - **Werkzeug**
 - **HTML / CSS (para los templates)**
+- **PostgreSQL (en producción)**
+- **SQLite (en desarrollo)**
+- **Render (para despliegue)**
+
+---
 
 ## ⚙️ Funcionalidades
 
@@ -19,12 +24,11 @@ Este proyecto es una plataforma web de gestión de usuarios y tareas, inspirada 
 - Interfaz separada para usuarios autenticados.
 
 ## 📁 Estructura del Proyecto
-/static/ # Archivos estáticos (CSS, imágenes, JS) ├── style.css # Estilos personalizados
+/static/
+├── style.css # Estilos personalizados ├── img/ # Imágenes del sitio (si las hubiera) /templates/
+├── index.html # Página de inicio con formulario de registro/login ├── tareas_p.html # Panel de tareas del usuario logueado
 
-/templates/ # Archivos HTML ├── index.html # Página principal con registro/login ├── tareas_p.html # Panel de tareas del usuario
-
-app.py # Lógica principal del servidor Flask tareas.db # Base de datos SQLite (se crea automáticamente) README.md # Documentación del proyecto
-
+app.py # Código principal de la aplicación Flask requirements.txt # Lista de dependencias para instalar README.md # Documentación del proyecto .env (opcional) # Variables de entorno (para desarrollo)
 
 ## 🚀 Cómo ejecutar el proyecto
 
@@ -41,7 +45,7 @@ venv\Scripts\activate      # En Windows
 
 3. Instala las dependencias
 
-pip install flask flask_sqlalchemy werkzeug
+pip install -r requirements.txt
 
 4. Ejecuta la app
 
@@ -49,15 +53,45 @@ python app.py
 
 La aplicación estará disponible en http://127.0.0.1:5000.
 
+☁️ Despliegue en Render con PostgreSQL
+
+Crear cuenta en Render.
+
+Conectar tu repositorio desde GitHub.
+
+Crear un nuevo servicio web ("Web Service").
+
+Configurar variables de entorno:
+
+DATABASE_URL = (url de PostgreSQL que te da Render)
+SECRET_KEY = tu_clave_secreta
+
+Seleccionar el entorno Python y usar como comando de inicio:
+
+gunicorn app:app
+
+Render instalará automáticamente las dependencias desde requirements.txt.
+
+
 📝 Notas
+
+En desarrollo local se usa SQLite, pero en producción usamos PostgreSQL.
+
+Usa siempre contraseñas largas y seguras.
+
+Puedes personalizar los estilos desde /static/style.css.
+
 La base de datos tareas.db se crea automáticamente al iniciar la app.
 
 Las contraseñas se almacenan de forma segura con hash.
 
 Se recomienda no usar la clave secreta "supersecreto" en producción.
 
-👩‍💻👨‍💻👨‍💻 Autores
+Autores
+Equipo 4- Conformado por:
 
-Equipo 4- Conformado por: Edwin, José, Jhordalia
+👨‍💻 Edwin Jeremías Agustín Yack 2024-0391
+👨‍💻 José
+👩‍💻 Jhordalia María Peña Santana
 
 Proyecto final de Introducción a los sistemas de computación – ITLA.
