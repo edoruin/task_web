@@ -32,18 +32,18 @@ app.py # Código principal de la aplicación Flask requirements.txt # Lista de d
 
 ## 🚀 Cómo ejecutar el proyecto
 
-### 
+
 1. Uso del link de render
    
  https://task-web-g5zv.onrender.com
  
 
-3. Crea un entorno virtual (opcional pero recomendado)
+2. Crea un entorno virtual (opcional pero recomendado)
 python -m venv venv
 source venv/bin/activate   # En Linux o Mac
 venv\Scripts\activate      # En Windows
 
-4. Instala las dependencias
+3. Instala las dependencias
 
 pip install -r requirements.txt
 
