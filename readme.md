@@ -32,18 +32,18 @@ app.py # Código principal de la aplicación Flask requirements.txt # Lista de d
 
 ## 🚀 Cómo ejecutar el proyecto
 
-### 1. Clona el repositorio
+### 
+1. Uso del link de render
+   
+ https://task-web-g5zv.onrender.com
+ 
 
-```bash
-git clone https://github.com/tu-usuario/tu-repo.git
-cd tu-repo
-
-2. Crea un entorno virtual (opcional pero recomendado)
+3. Crea un entorno virtual (opcional pero recomendado)
 python -m venv venv
 source venv/bin/activate   # En Linux o Mac
 venv\Scripts\activate      # En Windows
 
-3. Instala las dependencias
+4. Instala las dependencias
 
 pip install -r requirements.txt
 
@@ -52,8 +52,9 @@ pip install -r requirements.txt
 python app.py
 
 La aplicación estará disponible en http://127.0.0.1:5000.
+      
 
-☁️ Despliegue en Render con PostgreSQL
+## ☁️ Despliegue en Render con PostgreSQL  
 
 Crear cuenta en Render.
 
@@ -73,7 +74,7 @@ gunicorn app:app
 Render instalará automáticamente las dependencias desde requirements.txt.
 
 
-📝 Notas
+## 📝 Notas
 
 En desarrollo local se usa SQLite, pero en producción usamos PostgreSQL.
 
@@ -87,7 +88,8 @@ Las contraseñas se almacenan de forma segura con hash.
 
 Se recomienda no usar la clave secreta "supersecreto" en producción.
 
-Autores
+## Autores  
+
 Equipo 4- Conformado por:
 
 👨‍💻 Edwin Jeremías Agustín Yack 2024-0391
