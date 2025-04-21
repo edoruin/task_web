@@ -32,26 +32,27 @@ app.py # Código principal de la aplicación Flask requirements.txt # Lista de d
 
 ## 🚀 Cómo ejecutar el proyecto
 
-
 1. Uso del link de render
    
- https://task-web-g5zv.onrender.com
+    https://task-web-g5zv.onrender.com
  
 
 2. Crea un entorno virtual (opcional pero recomendado)
-python -m venv venv
-source venv/bin/activate   # En Linux o Mac
-venv\Scripts\activate      # En Windows
+
+   python -m venv venv
+   source venv/bin/activate   # En Linux o Mac
+   venv\Scripts\activate      # En Windows
 
 3. Instala las dependencias
 
-pip install -r requirements.txt
+   pip install -r requirements.txt
 
 4. Ejecuta la app
 
-python app.py
+   python app.py
 
 La aplicación estará disponible en http://127.0.0.1:5000.
+
       
 
 ## ☁️ Despliegue en Render con PostgreSQL  
