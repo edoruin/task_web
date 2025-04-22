@@ -1,4 +1,4 @@
-# Plataforma Educativa con Moodle
+# Plataforma de administración de tareas
 
 Este proyecto es una plataforma web de gestión de usuarios y tareas, inspirada en las funcionalidades básicas de plataformas como Moodle. Está construido con **Python**, **Flask** y **SQLite**.
 
