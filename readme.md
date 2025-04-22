@@ -91,7 +91,7 @@ Se recomienda no usar la clave secreta "supersecreto" en producción.
 
 ## Autores  
 
-Equipo 4- Conformado por:
+Equipo 2- Conformado por:
 
 👨‍💻 Edwin Jeremías Agustín Yack 2024-0391
 👨‍💻 José
