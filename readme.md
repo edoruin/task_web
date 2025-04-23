@@ -1,6 +1,6 @@
 # Plataforma de administración de tareas
 
-Este proyecto es una plataforma web de gestión de usuarios y tareas, inspirada en las funcionalidades básicas de plataformas como Moodle. Está construido con **Python**, **Flask** y **SQLite**.
+Este proyecto es una plataforma web de gestión de usuarios y tareas (Task-web) desarrollada como proyecto final para la asignatura Introducción a los Sistemas de Computación en el Instituto Tecnológico de las Américas (ITLA). Está construido con **Python**, **Flask** y **SQLite**.
 
 ## 🔧 Tecnologías utilizadas
 
