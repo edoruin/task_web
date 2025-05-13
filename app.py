@@ -15,7 +15,7 @@ app = Flask(__name__, static_url_path='/static')
 app.secret_key = os.environ.get("API_KEY_SECRET")
 
 # Reemplaza con tu URL real de base de datos
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///tareas.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
