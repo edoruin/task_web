@@ -12,7 +12,7 @@ from datetime import datetime
 
 #Agregando el administrador de servidores a una variable
 app = Flask(__name__, static_url_path='/static')
-app.secret_key = "supersecreto"
+app.secret_key = os.environ.get(API_KEY_SECRET)
 
 # Reemplaza con tu URL real de base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///tareas.db")
