@@ -98,3 +98,7 @@ Equipo 2- Conformado por:
 👩‍💻 Jhordalia María Peña Santana
 
 Proyecto final de Introducción a los sistemas de computación – ITLA.
+
+
+Soporte y Feedbacks a:
+[edwinjeremiasagustinyack@gmail.com](edwinjeremiasagustinyack@gmail.com)
