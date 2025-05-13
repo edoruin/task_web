@@ -6,6 +6,8 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    padding-bottom: 80px; 
+
   }
   .container {
   max-width: 800px;
@@ -56,4 +58,36 @@ body {
     font-size: 1.2em;
     margin-bottom: 10px;
   }
-  
+
+.site-footer {
+    background-color: #f2f2f2;
+    color: #333;
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
+    box-sizing: border-box;
+
+    position: fixed; 
+    bottom: 0; 
+    left: 0; 
+    z-index: 100; 
+}
+
+
+
+.site-footer .footer-content {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.site-footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+.site-footer a:hover {
+    text-decoration: underline;
+}
+.site-footer p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
