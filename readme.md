@@ -93,8 +93,8 @@ Se recomienda no usar la clave secreta "supersecreto" en producción.
 
 Equipo 2- Conformado por:
 
-👨‍💻 Edwin Jeremías Agustín Yack 2024-0391
-👨‍💻 José
+👨‍💻 Edwin Jeremías Agustín Yack 
+👨‍💻 Jose Antonio Mateo Matos
 👩‍💻 Jhordalia María Peña Santana
 
 Proyecto final de Introducción a los sistemas de computación – ITLA.
