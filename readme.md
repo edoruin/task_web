@@ -101,4 +101,4 @@ Proyecto final de Introducción a los sistemas de computación – ITLA.
 
 
 Soporte y Feedbacks a:
-[edwinjeremiasagustinyack@gmail.com](edwinjeremiasagustinyack@gmail.com)
+[edwinjeremiasagustinyack@gmail.com]
