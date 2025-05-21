@@ -1,3 +1,7 @@
+#nota informativa
+El proyecto se mantendra inutilizado hasta que encuentre la oportunidad de agregar un servidor de base de datos sin tiempo limite como el que el plan gratuito de render ofrece, mil disculpas
+y gracias por su apoyo!! de todas formas no duden en utilizar y analizar el codigo, es funcional.
+
 # Plataforma de administración de tareas
 
 Este proyecto es una plataforma web de gestión de usuarios y tareas (Task-web) desarrollada como proyecto final para la asignatura Introducción a los Sistemas de Computación en el Instituto Tecnológico de las Américas (ITLA). Está construido con **Python**, **Flask** y **SQLite**.
